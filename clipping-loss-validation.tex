@@ -21,7 +21,7 @@
 
 \title{Validation of Subhourly Clipping Loss Error Corrections}
 
-\author{\IEEEauthorblockN{Abhishek Parikh\textsuperscript{1}, Kevin Anderson\textsuperscript{2}, Kirsten Perry\textsuperscript{2}, and William B. Hobbs\textsuperscript{3}}
+\author{\IEEEauthorblockN{Abhishek Parikh\textsuperscript{1}, Kevin Anderson\textsuperscript{2}, Kirsten Perry\textsuperscript{2}, William B. Hobbs\textsuperscript{3}, and Mark A. Mikofski\textsuperscript{1}}
 	\IEEEauthorblockA{\textsuperscript{1}DNV, San Diego, CA, 92123, USA }
     \IEEEauthorblockA{\textsuperscript{2}NREL, Golden, CO, 80401, USA }
     \IEEEauthorblockA{\textsuperscript{3}Southern Company, Birmingham, AL, 35203, USA }}
@@ -37,7 +37,20 @@ inverter, clipping, solar, irradiance, variability, performance, modeling, TMY
 \end{IEEEkeywords}
 
 \section{Introduction}
-Systematic underproduction across the industry is raising concerns among investors. In the 2020 Solar Risk Assessment from kWh Analytics \cite{Matsui2020}, NextEra reported that, "Sub-hour solar resource variability impacts actual energy production by approximately 1-4\%." Similarly DNV found that in 2019 operating projects were under-performing pre-construction energy assessments by up to 3\% on average. kWh Analytics reached a similar conclusion.
+In their "2020 Solar Risk Assessment" \cite{Matsui2020}, kWh Analytics explains how systematic underproduction across the industry exposes investors to increased risk. DNV found that a sample of 39 projects from 2019 were under-performing compared to their pre-construction energy assessments by up to 3\% on average as shown in Fig.~\ref{project-underperformance}. NextEra reported that, "Sub-hour solar resource variability impacts actual energy production by approximately 1-4\%." Cormode, \textit{et al.}, demonstrated that energy assessments based on hourly weather underestimate inverter clipping losses by up to 5\% for projects with intra-hourly solar variability especially for high DC/AC \cite{Cormode2019}. This is observed in Fig.~\ref{irradiance-and-power}, which shows irradiance and power output at 1-minute and 1-hour resolution in the top and bottom panels respectively. On July 10th there is little intra-hour variability, a mostly clear day, and so hourly and sub-hourly simulations are in close agreement. In contrast, July 13th has much higher solar variability, but no clipping is observed in the 1-hour output. However, the 1-minute resolution shows intermittent clipping all day long, indicating that not all of the available irradiance is used by the system, and the hourly simulation underestimates inverter clipping \cite{Kharait}. Several 
+
+\begin{figure}[htbp]
+\centerline{\includegraphics[width=9cm]{fig1.png}}
+\caption{Project-average validation results for solar energy assessments. Each project-year was adjusted for interannual variability by scaling production by the ratio of TGY to historical monthly insolation.}
+\label{project-underperformance}
+\end{figure}
+
+
+\begin{figure}[htbp]
+\centerline{\includegraphics[width=9cm]{hourly_v_1-min_clipping.png}}
+\caption{Irradiance input from the NIST test-bed weather station in Gaithersburg, MD, and predicted energy output using SolarFarmer at time-resolution of 1-minute, \textit{top panel}, and 1-hour, \textit{bottom panel}. The black dashed line in both panels shows the inverter rated power, 260-kW.}
+\label{irradiance-and-power}
+\end{figure}
 
 \section{Evaluation abstract}
 
@@ -223,7 +236,7 @@ copy& More table copy$^{\mathrm{a}}$& &  \\
 \end{table}
 
 \begin{figure}[htbp]
-\centerline{\includegraphics{fig1.png}}
+\centerline{\includegraphics[width=9cm]{fig1.png}}
 \caption{Example of a figure caption.}
 \label{fig}
 \end{figure}
