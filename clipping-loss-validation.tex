@@ -21,7 +21,7 @@
 
 \title{Validation of Subhourly Clipping Loss Error Corrections}
 
-\author{\IEEEauthorblockN{Abhishek Parikh\textsuperscript{1}, Kevin Anderson\textsuperscript{2}, Kirsten Perry\textsuperscript{2}, William B. Hobbs\textsuperscript{3}, and Mark A. Mikofski\textsuperscript{1}}
+\author{\IEEEauthorblockN{Abhishek Parikh\textsuperscript{1}, Kevin Anderson\textsuperscript{2}, Kirsten Perry\textsuperscript{2}, William B. Hobbs\textsuperscript{3}, Rounak Kharait\textsuperscript{1} and Mark A. Mikofski\textsuperscript{1}}
 	\IEEEauthorblockA{\textsuperscript{1}DNV, San Diego, CA, 92123, USA }
     \IEEEauthorblockA{\textsuperscript{2}NREL, Golden, CO, 80401, USA }
     \IEEEauthorblockA{\textsuperscript{3}Southern Company, Birmingham, AL, 35203, USA }}
@@ -29,7 +29,7 @@
 \maketitle
 
 \begin{abstract}
-Under-performance of PV systems is an important issue that increases risks for investors. Recently some attention has focused on underestimation of inverter clipping losses as a possible source of over-prediction where sub-hour solar variability is high. Several models and data sets have been analyzed over the past few years, with the aim of quantifying, predicting, and correcting underestimated clipping loss errors for sites with high DC/AC and solar variability. In this report we compare operational data with a machine learning model developed at NREL to correct energy assessments based on hourly weather. In addition, the model is expanded to include site meta-data like DC/AC as factors, so that the model is flexible enough to be used for reducing clipping loss error in energy assessments for a wide variety of sites. \textit{\color{red}add more details about test sites and results here when we have them.}
+Under-performance of PV systems is an important issue that increases risks for stakeholders like developers, investors and operators. Recently some attention has focused on underestimation of inverter clipping losses as a possible source of over-prediction where sub-hourly solar variability is high. Several models and data sets have been analyzed over the past few years, with the aim of quantifying, predicting, and correcting underestimated clipping loss errors for sites with high DC/AC and solar variability. In this report, we compare operational data with a machine learning model developed at NREL to correct energy assessments based on hourly weather. In addition, the model is expanded to include site meta-data like DC/AC as factors, so that the model is flexible enough to be used for reducing clipping loss error in energy assessments for a wide variety of sites. 
 \end{abstract}
 
 \begin{IEEEkeywords}
@@ -52,7 +52,7 @@ In their "2020 Solar Risk Assessment" \cite{Matsui2020}, kWh Analytics warned th
 \label{fig:irradiance-and-power}
 \end{figure}
 
-Several methods have been proposed to correct clipping loss errors in hourly predictions \cite{Cormode2019,Kharait,Anderson2020,Bradford}, but only NextEra validated their method with operational data \cite{Bradford}. In this report, we adopt the NREL machine-learning based model \cite{Anderson2020} to predict clipping loss corrections and apply them to hourly energy assessments. The adjusted energy assessment is then validated against operational data from the same site, and we report on the average and distribution of validation errors. \textit{\color{red}add some results here when we have them.} We have obtained data from seven operating PV systems in different climates and with a range of DC/AC ratios. In this paper, we will present the first of these systems, outline our method, and present preliminary results. The final paper will present validation results from all seven sites plus the NIST ground array \cite{Boyd2017b} as a benchmark.
+Several methods have been proposed to correct clipping loss errors in hourly predictions \cite{Cormode2019,Kharait,Anderson2020,Bradford}, but only NextEra validated their method with operational data \cite{Bradford}. In this report, we adopt the NREL machine-learning based model \cite{Anderson2020} to predict clipping loss corrections and apply them to hourly energy assessments. The adjusted energy assessment is then validated against operational data from the same site, and we report on the average and distribution of validation errors.  We have obtained data from seven operating PV systems in different climates and with a range of DC/AC ratios. In this paper, we will present the first of these systems, outline our method, and present preliminary results. The final paper will present validation results from all seven sites plus the NIST ground array \cite{Boyd2017b} as a benchmark.
 
 \section{Methods}
 
@@ -60,7 +60,6 @@ Several methods have been proposed to correct clipping loss errors in hourly pre
 
 The machine-learning model developed at NREL has already been described in detail \cite{Anderson2020}. This model is an ensemble regressor model comprised of black-box random forest and XGBoost models. Model inputs are taken from satellite data, and include clearsky POA, clearsky GHI, POA, GHI, and cell temperature, as well as features derived from these fields. The model currently has been trained on a fixed layout with a single DC/AC, to match the physical site we are validating against. In the final manuscript, DC/AC will be introduced as a new continuous factor, and the model will be retrained with a range of DC/AC so appropriate clipping loss errors can be calculated for a wide range of common project configurations. As described in \cite{Anderson2020}, the model has been trained using high quality irradiance measurements from SURFRAD \cite{Augustine2000} and 1-minute to 30-minute clipping loss errors predicted using SAM \cite{Freeman2018}. The resulting trained model is then used to make predictions at the operational sites.
 
-\textit{\color{red}Image of flow chart?.}
 
 \subsection{Validation}
 A challenge in validating the clipping loss correction model is the lack of quality high-frequency irradiance measurements that are co-located with operational PV systems. Therefore this model differs from traditional approaches for model training and validation because it relies on SURFRAD measurements and SAM simulated data to train the model, but uses operational data from different sites for validation. So no holdout methods are required in validating this model because the training and validation data sets are already independent. The downside of this method is that any systematic biases in SAM are baked into the clipping loss correction model. In future work, if a large population of high-frequency irradiance and co-located operational data are obtained, the model can be retrained holding out a subset of the data for validation. This procedure would have the benefit of incorporating any physical effects that are not captured by SAM.
@@ -130,15 +129,26 @@ AC capacity & 4,560 kW \\
 \end{itemize}
 
 \subsection{Validation Metrics}
-The operational site has data from April 2018 to June 2019 available for this validation.
-\textit{\color{red}a few tables and figures about site A operational performance. And of course! the metrics discussed above. Definitely show a histogram of the bias, a plot of the bias vs. output, and a table of the MBE, MAE, \& RMSE. Then definitely a discussion of the results. Are they good, okay, why do we think so? what assumptions are there that could be affecting the outcomes?}
+The operational site has data from April 2018 to June 2019 available for this validation. The following figures show the bias before and after adjusting for subhourly clipping underestimation.
+
+\begin{figure}[htbp]
+\centerline{\includegraphics[width=9cm]{Error_before_correction_2.png}}
+\caption{Delta between model and actual before clipping adjustment}
+\label{fig:before-clipping-error}
+\end{figure}
+
+\begin{figure}[htbp]
+\centerline{\includegraphics[width=9cm]{Error_after_correction_2.png}}
+\caption{Delta between model and actual after clipping adjustment}
+\label{fig:after-clipping-error}
+\end{figure}
+
+The current operational dataset used for validation needs further quality checks on the  
 
 \section{Conclusions}
 Improvements in prediction of PV system performance increases investor confidence. Over-prediction occurs in typical energy assessments that use hourly data if the sites have sub-hourly solar variability and high DC/AC because clipping losses are underestimated. These errors have been quantified using a machine-learning model trained on high-frequency solar irradiance data and simulated operational data to create clipping loss error corrections. The corrections were applied to a typical hourly energy assessment of an existing operational site and compared to the measured output from the same site. The mean bias error was reduced from X\% to Y\% per year. The final report will report the validation results for an additional 7 operating PV sites. with the goal of providing a standard method for correcting clipping loss errors from typical energy assessments, and therefore decreasing investor risk.
 
 \section*{Acknowledgment}
-
-Acknowledge the data providers if they want it? Anything for Southern Company or DNV?
 
 This work was authored in part by Alliance for Sustainable Energy, LLC, the manager and operator of the National Renewable Energy Laboratory for the U.S. Department of Energy (DOE) under Contract No. DE-AC36-08GO28308. Funding provided by the U.S. Department of Energy’s Office of Energy Efficiency and Renewable Energy (EERE) under Solar Energy Technologies Office (SETO) Agreement Numbers 34348. The views expressed in the article do not necessarily represent the views of the DOE or the U.S. Government. The U.S. Government retains and the publisher, by accepting the article for publication, acknowledges that the U.S. Government retains a nonexclusive, paid-up, irrevocable, worldwide license to publish or reproduce the published form of this work, or allow others to do so, for U.S. Government purposes.
 
